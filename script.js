@@ -11,7 +11,10 @@ let formSearch = document.querySelector(".form-search"),
 
 //let citiesApi = 'http://api.travelpayouts.com/data/ru/cities.json';
 let citiesApi = "dataBase/cities.json";
-let proxy = "https://cors-anywhere.herokuapp.com/";
+let proxy = 'https://cors-anywhere.herokuapp.com/';
+let API_KEY = '7f084d8c89ba7edfe2f7a43d0eb58c71';
+let calendar ='http://min-prices.aviasales.ru/calendar_preload';
+let calendar_params = '?origin=MOW&destination=LED&depart_date=2020-05-05&one_way=true';
 
 let city = [];
 
@@ -79,8 +82,13 @@ dropdownCitiesTo.addEventListener("click", event => {
 
 getData(citiesApi, data => {
 
-  city = JSON.parse(data).filter((item)=> {
-    return item.name;
-  });
+  console.log(JSON.parse(data));
+  city = JSON.parse(data).filter((item) => item.name);
 
+});
+
+getData(calendar + calendar_params, data => {
+
+
+  console.log(JSON.parse(data));
 });
