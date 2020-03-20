@@ -42,8 +42,11 @@ let showCity = function(input, list) {
   if (input.value !== "") {
     let filterCity = city.filter(item => {
         let fixItem = item.name.toLocaleLowerCase();
-       return fixItem.includes(input.value.toLocaleLowerCase());
+       return fixItem.startsWith(input.value.toLocaleLowerCase());
     });
+
+  
+   
 
     filterCity.forEach((item) => {
 
@@ -64,6 +67,32 @@ let selectCity = (e, input, list) => {
   }
 };
 
+let renderCheapDay = (cheapTicket) => {
+
+  
+};
+
+let renderCheapYear = (cheapTickets) => {
+
+  cheapTickets.sort((a,b)=> a.value - b.value);
+
+  console.log(cheapTickets);
+
+};
+
+let renderCheap  = (response, date) => {
+
+  let cheapTicket = JSON.parse(response).best_prices;
+
+  let cheapTicketDay = cheapTicket.filter((item) => item.depart_date == date);
+
+  renderCheapDay(cheapTicketDay);
+  renderCheapYear(cheapTicket);
+
+  console.log(cheapTicketDay);
+
+}
+
 inputCitiesTo.addEventListener("input", () => {
   showCity(inputCitiesTo, dropdownCitiesTo);
 });
@@ -80,15 +109,60 @@ dropdownCitiesTo.addEventListener("click", event => {
   selectCity(event, inputCitiesTo, dropdownCitiesTo);
 });
 
+formSearch.addEventListener('submit', (e)=>{
+  e.preventDefault();
+  console.log(e);
+
+  let formData = {
+
+    from: city.find((item)=>{ return inputCitiesFrom.value === item.name}).code,
+    to: city.find((item) =>{return inputCitiesTo.value === item.name}).code,
+    date: inputDateDepart.value
+  };
+
+  let requestData2 = '?origin=' + formData.from +
+  '&destination=' + formData.to + 
+  '&depart_date=' + formData.date + 
+  '&one_way=true';
+
+  let requestData = `?origin=${formData.from}&destination=${formData.to}&depart_date=${formData.date}&one_way=true`;
+
+  console.log(formData);
+
+
+  getData(calendar  + requestData, (response) => {
+    renderCheap(response, formData.date)
+    console.log(response);
+  });
+
+
+})
+
+
+
 getData(citiesApi, data => {
 
   console.log(JSON.parse(data));
   city = JSON.parse(data).filter((item) => item.name);
 
+  city.sort(function (a, b) {
+    if (a.name > b.name) {
+      return 1;
+    }
+    if (a.name < b.name) {
+      return -1;
+    }
+    // a должно быть равным b
+    return 0;
+  });
+
 });
 
-getData(calendar + calendar_params, data => {
+/*getData(calendar + calendar_params + '&token=' + API_KEY,
+ data => {
+  let ticket =  JSON.parse(data).best_prices.filter(item => item.depart_name === '2020-05-05');
+  console.log('ffff');
+  console.log(ticket);
+});*/
 
 
-  console.log(JSON.parse(data));
-});
