@@ -21,7 +21,7 @@ let calendar_params =
 const MAX_COUNT = 10;
 let city = [];
 
-let getData = (url, callback) => {
+let getData = (url, callback, reject = console.error) => {
   let request = new XMLHttpRequest();
 
   request.open("GET", url);
@@ -67,7 +67,7 @@ let selectCity = (e, input, list) => {
 
 let getNameCity = code => {
   let objCity = city.find(item => item.code === code);
-  console.log(objCity);
+
   return objCity.name;
 };
 
@@ -178,7 +178,7 @@ let renderCheap = (response, date) => {
   renderCheapDay(cheapTicketDay);
   renderCheapYear(cheapTicket);
 
-  console.log(cheapTicketDay);
+ 
 };
 
 inputCitiesTo.addEventListener("input", () => {
@@ -200,7 +200,7 @@ dropdownCitiesTo.addEventListener("click", event => {
 formSearch.addEventListener("submit", e => {
   e.preventDefault();
 
-  console.log(e);
+  
 
   let formData = {
     from: city.find(item => {
@@ -224,7 +224,7 @@ formSearch.addEventListener("submit", e => {
   if (formData.from && formData.to) {
     let requestData = `?origin=${formData.from.code}&destination=${formData.to.code}&depart_date=${formData.date}&one_way=true`;
 
-    console.log(formData);
+ 
 
     getData(calendar + requestData, response => {
       renderCheap(response, formData.date);
@@ -236,7 +236,7 @@ formSearch.addEventListener("submit", e => {
 });
 
 getData(citiesApi, data => {
-  console.log(JSON.parse(data));
+  
   city = JSON.parse(data).filter(item => item.name);
 
   city.sort(function(a, b) {
