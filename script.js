@@ -15,7 +15,7 @@ let formSearch = document.querySelector(".form-search"),
 let citiesApi = "dataBase/cities.json";
 let proxy = "https://cors-anywhere.herokuapp.com/";
 let API_KEY = "7f084d8c89ba7edfe2f7a43d0eb58c71";
-let calendar = "http://min-prices.aviasales.ru/calendar_preload";
+let calendar = "https://min-prices.aviasales.ru/calendar_preload";
 let calendar_params =
   "?origin=MOW&destination=LED&depart_date=2020-05-05&one_way=true";
 const MAX_COUNT = 10;
